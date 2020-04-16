@@ -21,41 +21,45 @@ classdef FileIOHandler < handle
         
         
         function saveRawDataFile(obj, figHandle)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            
+            metadata = obj.CHData.getMetadata();
+            
             chest = obj.CHData.getFiltData();
             abdomen = obj.CHData.getAssociatedData();
-            time = (1:1:length(chest))./obj.Metadata.SamplingFrequency;
+            time = (1:1:length(chest))./metadata.SamplingFrequency;
             
             chest = chest(:);
             abdomen = abdomen(:);
             time = time(:);
             
-            units = obj.Metadata.SignalUnits;
+            units = metadata.SignalUnits;
             
-            colNames = {'Time_sec',...
-                sprintf('Chest_%s', units),...
-                sprintf('Abdomen_%s', units)};
+            colNames = {'Time (sec)', sprintf('Chest (%s)', units),...
+                sprintf('Abdomen (%s)', units)};
             
             
-            data = table(time, chest, abdomen, 'VariableNames', colNames);
+            data = horzcat(time, chest, abdomen);
+            data = num2cell(data);
+            
+            finalData = vertcat(colNames, data);
+            
             filter = {'*.csv';'*.xls';'*.xlsm'; '*.xlsx*';'*.xlsb*';'*.dat*'; '*.txt*'};
             [file,path] = uiputfile(filter, 'Save Raw Data', 'RawDataExport.csv');
+            obj.updateDirectory(path);
             
             if ~isempty(file)
                 try
-                    obj.updateDirectory(path);
-                    writetable(data,file);
+                    writecell(finalData, [path file]);
+                    uialert(figHandle, 'Export successful!', 'Export Successful', 'Icon', 'success');
                 catch excep
-                    uialert(figHandle, 'Unable to write file. File may be open in another program.', 'Failure on Write');
+                    uialert(figHandle, 'Unable to write file.', 'Failure on Write');
                 end
             end
 
         end
         
-        function exportAnalysis(obj, figHandle)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+        function exportAnalysis(obj, figHandle, removedBreaths)
+            
             metadata = obj.CHData.getMetadata();
             
             ptInfoCell = struct2cell(metadata.PTInfo);
@@ -70,6 +74,13 @@ classdef FileIOHandler < handle
             header = horzcat(rowNames, rowValues);
             
             analyzableBreaths = obj.CHData.getIndicesAnalyzable();
+            if ~isempty(removedBreaths)
+                for i = 1:length(removedBreaths)
+                    analyzableBreaths(analyzableBreaths == removedBreaths(i)) = [];
+                end
+            end
+                
+            
             nRows = length(analyzableBreaths);
             
             startIndices = zeros(nRows, 1);
@@ -91,28 +102,32 @@ classdef FileIOHandler < handle
                 RCi(i) = breath.getRCI();
             end
             
-            colNames = {'StartTime_sec',...
-                'Duration_sec',...
-                'PhaseAngle_deg',...
+            breathNum = 1:nRows;
+            
+            colNames = {'Breath Number',...
+                'Start Time (sec)',...
+                'Duration (sec)',...
+                'PhaseAngle (deg)',...
                 'TpefTE',...
                 'pRC'};
+
+            data = horzcat(breathNum(:), startIndices(:), duration(:), PA(:), TPEFTE(:), RCi(:));
+            data = num2cell(data);
             
-            
-            data = {startIndices(:), duration(:), PA(:), TPEFTE(:), RCi(:)};
-            
-            data = vertcat(colNames, data);
+            finalData = vertcat(colNames, data);
             
             filter = {'*.csv';'*.xls';'*.xlsm'; '*.xlsx*';'*.xlsb*';'*.dat*'; '*.txt*'};
             [file,path] = uiputfile(filter, 'Save Analysis', 'RIPAnalysis.csv');
+            obj.updateDirectory(path);
             
             if ~isempty(file)
-                %try
+                try
                     writecell(header, [path file]);
-                    writecell(data, [path file], 'WriteMode', 'append');
-                    obj.updateDirectory(path);
-%                 catch excep
-%                     uialert(figHandle, 'Unable to write file. File may be open in another program.', 'Failure on Write');
-%                 end
+                    writecell(finalData, [path file], 'WriteMode', 'append');
+                    uialert(figHandle, 'Export successful!', 'Export Successful', 'Icon', 'success');
+                catch excep
+                    uialert(figHandle, 'Unable to write file. File may be open in another program.', 'Failure on Write');
+                end
             end
 
         end

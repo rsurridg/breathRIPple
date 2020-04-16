@@ -125,14 +125,14 @@ classdef BandRecording < handle
             
             % app.SleepStatusChange = [0 a 29 q 70 a 85 q 92 a 108];
             sleepStatus = obj.MetaData.SleepStatus;
-            if length(sleepStatus) > 2
+            if ~isempty(sleepStatus)
                 startIndices = obj.getStartIndices();
                 startTimes = startIndices./obj.MetaData.SamplingFrequency;
 
                 for i = 1:2:length(sleepStatus)-1
                     % first loop, i = 1 (0), second loop, i = 3 (70), third oop
                     % i = 5 (92)
-                    subset = find(startTimes > sleepStatus(i) & startTimes < sleepStatus(i+1));
+                    subset = find(startTimes > sleepStatus{i} & startTimes < sleepStatus{i+1});
                     for j = 1:length(subset)
                         breaths(subset(j)).setQuietSleepPass(false);
                     end

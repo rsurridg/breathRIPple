@@ -75,7 +75,7 @@ classdef Sorter
          end
         
          function pass = konnoMeadeCrossover(obj, CHdata, ABdata)
-            midpoint = floor(length(CHdata)/2);
+            [~, midpoint] = max(CHdata);
             
             x1 = ABdata(1:midpoint);
             x2 = ABdata(midpoint+1:end);
