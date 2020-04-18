@@ -28,7 +28,7 @@ classdef FileInHandler < handle
             filter = {'*.csv'};
             [file,path] = uigetfile(filter, 'Load RIP Data');
             
-            %try
+            try
                 progress = uiprogressdlg(obj.AppFigure,'Title', 'Data Upload In Progress', 'Message', 'Uploading .csv...',...
                     'Indeterminate','on');
                 data = importBioRadioCSV([path file]);
@@ -50,11 +50,11 @@ classdef FileInHandler < handle
                     goodToClose = false;
                 end
                 
-%             catch ME
-%                 uialert(obj.AppFigure, 'File upload failed. Please try again.', 'File upload fail');
-%                 CHrecording = [];
-%                 goodToClose = false;
-%             end
+            catch ME
+                uialert(obj.AppFigure, 'File upload failed. Please try again.', 'File upload fail');
+                CHrecording = [];
+                goodToClose = false;
+            end
             
 
         end

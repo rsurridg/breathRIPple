@@ -1,6 +1,7 @@
 classdef BandRecording < handle
     properties (Access = protected)
        RawData          % unfiltered data straight from BioRadio
+       RawAssociatedData
        FilteredData     
        Breaths          % array of breaths parsed from raw data
        AssociatedData
@@ -11,6 +12,7 @@ classdef BandRecording < handle
     methods
         function obj = BandRecording(CHdata, ABdata, metadata)
            obj.RawData = CHdata;
+           obj.RawAssociatedData = ABdata;
            obj.MetaData = metadata;
            obj.FilteredData = obj.filterNoise(CHdata);
            obj.AssociatedData = obj.filterNoise(ABdata);
@@ -25,6 +27,10 @@ classdef BandRecording < handle
         
         function associatedData = getAssociatedData(obj)
             associatedData = obj.AssociatedData;
+        end
+        
+        function rawAssociatedData = getRawAssociatedData(obj)
+            rawAssociatedData = obj.RawAssociatedData;
         end
         
         function len = getLength(obj)

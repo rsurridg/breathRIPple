@@ -76,11 +76,9 @@ classdef FileIOHandler < handle
         
         function exportAnalysis(obj, figHandle, removedBreaths)
             
-            obj.removeAnalyzableBreaths(removedBreaths);
             
-            header = obj.assembleHeader();
-            finalData = obj.assembleData();
             
+            data = obj.assembleData();
             
             filter = {'*.csv';'*.xls';'*.xlsm'; '*.xlsx*';'*.xlsb*';'*.dat*'; '*.txt*'};
             [file,path] = uiputfile(filter, 'Save Analysis', 'RIPAnalysis.csv');
@@ -95,8 +93,6 @@ classdef FileIOHandler < handle
                     uialert(figHandle, 'Unable to write file. File may be open in another program.', 'Failure on Write');
                 end
             end
-            
-            obj.replaceAnalyzableBreaths(removedBreaths);
             
             
 
@@ -118,24 +114,12 @@ classdef FileIOHandler < handle
         end
         
         function header = assembleHeader(obj)
-            metadata = obj.CHData.getMetadata();
             
-            ptInfoCell = struct2cell(metadata.PTInfo);
-            ptInfoFieldNames = fieldnames(metadata.PTInfo);
-            
-            userInfoCell = struct2cell(metadata.UserInfo);
-            userInfoFieldNames = fieldnames(metadata.UserInfo);
-            
-            rowNames = vertcat(ptInfoFieldNames, userInfoFieldNames);
-            rowValues = vertcat(ptInfoCell, userInfoCell);
-            
-            header = horzcat(rowNames, rowValues);
             
         end
         
         function data = assembleData(obj)
             analyzableBreaths = obj.CHData.getIndicesAnalyzable();
-            metadata = obj.CHData.getMetadata();
 
             nRows = length(analyzableBreaths);
             
