@@ -1,0 +1,78 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="1192699505" file="C:\Users\rache\OneDrive\Desktop\SeniorDesignFinal\BreathRIPple.prj" location="C:\Users\rache\OneDrive\Desktop\SeniorDesignFinal" name="BreathRIPple" target="target.mlapps" target-name="Package App">
+    <param.appname>BreathRIPple</param.appname>
+    <param.authnamewatermark>Rachel Surridge</param.authnamewatermark>
+    <param.email>rsurridg@iu.edu</param.email>
+    <param.company />
+    <param.icon />
+    <param.icons />
+    <param.summary>A MATLAB app for recording and analyzing respiratory inductance plethysmography signals.</param.summary>
+    <param.description>Intended to interface with CleveMed's BioCapture V. 4.3.133 and BioRadio 150 system, available from Great Lakes Neurotechnologies. Contact developer Rachel Surridge (rsurridg@iu.edu) with development requests. Copyright Purdue University 2020.</param.description>
+    <param.screenshot>C:\Users\rache\OneDrive\Desktop\Picture1.png</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}</param.output>
+    <param.guid>73a41bbe-4686-493b-b7cf-e00c0f9ca6b7</param.guid>
+    <unset>
+      <param.company />
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\RIPApp\gui\DataCollectionModule2.mlapp</file>
+    </fileset.main>
+    <fileset.depfun>
+      <file>C:\Users\rache\AppData\Roaming\MathWorks\MATLAB Add-Ons\Functions\Fast and Robust Curve Intersections\intersections.m</file>
+      <file>${PROJECT_ROOT}\importBioRadioCSV.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\analysis\Analyzer.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\gui\analysisScreen2.mlapp</file>
+      <file>${PROJECT_ROOT}\RIPApp\gui\FileInHandler.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\gui\FileIOHandler.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\postprocess\Matcher.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\postprocess\Sorter.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\record\BandRecording.m</file>
+      <file>${PROJECT_ROOT}\RIPApp\record\Breath.m</file>
+    </fileset.depfun>
+    <fileset.resources />
+    <fileset.package />
+    <build-deliverables>
+      <file location="C:\Users\rache\OneDrive\Desktop" name="SeniorDesignFinal" optional="false">C:\Users\rache\OneDrive\Desktop\SeniorDesignFinal</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2020a</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

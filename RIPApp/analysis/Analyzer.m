@@ -71,12 +71,13 @@ classdef Analyzer
             
             goodBreaths = obj.CHRecording.getIndicesAnalyzable();
             [meanDuration, ~] = obj.CHRecording.calculateMeanDuration();
-            breathsPer5Min = floor(60/meanDuration*5);
+            breathsPer5Min = floor(60/meanDuration*5); % calculate approximately how many breaths are taken in five minutes
             
-            numSubsets = floor(obj.CHRecording.getNumBreaths()/breathsPer5Min);
+            numBreaths = obj.CHRecording.getNumBreaths();
+            numSubsets = floor(obj.CHRecording.getNumBreaths()/breathsPer5Min); % find out how many "five minute segments" there are in the dataset
             if numSubsets > 0 % if more than five minutes in the data
             
-                startBreath = (1:numSubsets+1).* breathsPer5Min;
+                startBreath = linspace(1, numBreaths, numSubsets+1);
                 for i = 1:numSubsets
                     breathsConsidered{i} = startBreath(i):startBreath(i+1);
                     common(i) = length(intersect(goodBreaths, breathsConsidered{i}));

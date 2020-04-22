@@ -1,10 +1,8 @@
 % clear all;
 clc;
 close all;
-file = "C:\Users\rache\OneDrive\Desktop\SeniorDesignData\0510014.csv";
-%data = importBioRadioCSV(file);
-
-
+file = "C:\Users\rache\OneDrive\Desktop\SeniorDesignData\510022.csv";
+data = importBioRadioCSV(file);
 
 seconds = second(data.ElapsedTime);
 diffSeconds = diff(seconds);
@@ -15,13 +13,13 @@ metadata.SamplingFrequency = round(1/modeDiff);
 metadata.SignalUnits = 'mV';
 metadata.SleepStatus = [];
 
-start = 33.5*60*metadata.SamplingFrequency; 
-len = length(data.AB); %2*60*metadata.SamplingFrequency; % length must not exceed size of data
+start = 1; %39*60*metadata.SamplingFrequency; 
+%len = length(data.AB); %2*60*metadata.SamplingFrequency; % length must not exceed size of data
 
-end_i = start+len-1;
+end_i = 21.5*60*metadata.SamplingFrequency;
 
-ABRawData = -data.AB(start:end);
-CHRawData = -data.RC(start:end);
+ABRawData = -data.AB(start:end_i);
+CHRawData = -data.RC(start:end_i);
 
 
 %ABData = ABDRecording(ABRawData, metadata); 
